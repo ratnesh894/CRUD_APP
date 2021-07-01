@@ -1,0 +1,13 @@
+.App{
+  text-align: center;
+}
+.container{
+  text-align: center;
+  padding-top: 50px;
+}
+h1{
+  text-align: center;
+  color: blue;
+  padding: 40px;
+  font-family: Arial;
+}
