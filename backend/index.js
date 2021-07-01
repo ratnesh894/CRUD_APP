@@ -44,16 +44,10 @@ db.connect((err) => {
     console.log('Connection Failed!' + JSON.stringify(err, undefined, 2));
 });
 
-/* app.get("/",(req,res)=>{
-    const sqlInsert= "INSERT INTO employee (EmployeeName,EmployeeSalary) values ('Abhishek',35000)";
-    db.query(sqlInsert, (err,result)=>{
-        res.send("hello ratnesh");
-    })
-    }); */
 app.post("/register", (req, res) => {
-   const Email= req.body.Email;
-   const Password= req.body.Password;
-  const  Category= req.body.Category;
+  const Email = req.body.Email;
+  const Password = req.body.Password;
+  const Category = req.body.Category;
   bcrypt.hash(Password, saltRounds, (err, hash) => {
     if (err) {
       console.log(err);
@@ -72,41 +66,6 @@ app.post("/register", (req, res) => {
     );
   });
 });
-/* app.get("/login", (req, res) => {
- if (req.session.Email) {
-   res.send({ loggedIn: true, Email: req.session.Email });
- } else {
-   res.send({ loggedIn: false });
- }
-});
-
-app.post("/login", (req, res) => {
- const Email = req.body.Email;
- const Password = req.body.Password;
- db.query(
-   "SELECT * FROM login WHERE Email = ?;",
-   Email,
-   (err, result) => {
-     if (err) {
-       res.send({ err: err });
-     }
-
-     if (result.length > 0) {
-       bcrypt.compare(Password, result[0].Password, (error, response) => {
-         if (response) {
-           req.session.Email = result;
-           console.log(req.session.Email);
-           res.send(result);
-         } else {
-           res.send({ message: "Wrong username/password combination!" });
-         }
-       });
-     } else {
-       res.send({ message: "User doesn't exist" });
-     }
-   }
- );
-});  */
 app.post('/login', async (req, res) => {
   const Email = req.body.Email;
   const Password = req.body.Password;
@@ -118,7 +77,7 @@ app.post('/login', async (req, res) => {
       if (!validPassword) return res.status(400).json('Email and password combination does not match');
 
       // //generates token with user id
-      const token = await jwt.sign({ _Email:Email}, "sbdwuebdwywyuYUAVDUYQWD", { expiresIn: '24h' });
+      const token = await jwt.sign({ _Email: Email }, "sbdwuebdwywyuYUAVDUYQWD", { expiresIn: '24h' });
       if (token) return res.status(200).json(token);
       // console.log(rows[0])
       // res.json(rows[0].Password)
@@ -135,16 +94,16 @@ app.post('/login', async (req, res) => {
 })
 
 app.get('/data', verify, (req, res) => {
-   try {
-    const user =  db.query('SELECT * FROM login WHERE Email = ?', [decodedData._Email],(error,rows,fields)=>{
-     /*  console.log(rows); */
-          return res.status(200).json({rows});
-      });
+  try {
+    const user = db.query('SELECT * FROM login WHERE Email = ?', [decodedData._Email], (error, rows, fields) => {
+      /*  console.log(rows); */
+      return res.status(200).json({ rows });
+    });
   } catch (error) {
-      console.log("error");
-  } 
- /*  console.log(decodedData._Email);
-  res.status(200).json({decodedData}) */
+    console.log("error");
+  }
+  /*  console.log(decodedData._Email);
+   res.status(200).json({decodedData}) */
 })
 
 let decodedData = "";
@@ -156,7 +115,7 @@ function verify(req, res, next) {
   if (!token) return res.status(400).json({ message: 'Access Denied' });
 
   try {
-    const verified = jwt.verify(token,"sbdwuebdwywyuYUAVDUYQWD");
+    const verified = jwt.verify(token, "sbdwuebdwywyuYUAVDUYQWD");
     decodedData = verified;
     next();
   } catch (error) {

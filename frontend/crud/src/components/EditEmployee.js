@@ -2,19 +2,18 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import { Container, Button, Form, Row, Col } from 'react-bootstrap';
 import axios from 'axios';
-import { useHistory }from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
-import { Alert } from 'react-bootstrap';
+
 
 function EditEmployee(props) {
     const [message, setMessage] = useState("")
     const [data, setData] = useState({})
-    useEffect(async() => {
-        // async function getData() {
-            const response = await axios.get('http://localhost:3001/employee/' + props.match.params.id)
-            setData(response.data[0])
-        // }
-        // getData()
+    useEffect(async () => {
+
+        const response = await axios.get('http://localhost:3001/employee/' + props.match.params.id)
+        setData(response.data[0])
+
     }, [props])
     const [error, setError] = useState({
         idError: '',
@@ -55,8 +54,8 @@ function EditEmployee(props) {
             return true
         }
     }
-    let history=useHistory();
-    function Cancel(){
+    let history = useHistory();
+    function Cancel() {
 
         history.push('/');
     }
@@ -75,51 +74,51 @@ function EditEmployee(props) {
     }
     return (
         <Container className="mt-4">
-            <h3 style={{textAlign:'justify'}}>Edit Employee</h3>
+            <h3 style={{ textAlign: 'justify' }}>Edit Employee</h3>
             <Row>
                 <Col>
                     {message ? <h2>{message}</h2> :
                         <Form onSubmit={submitData}>
-                            {data?
-                            <>
-                            <Form.Group>
-                                <Form.Label>Employee id: </Form.Label>
-                                <Form.Control
-                                    type="text"
-                                    value={data.id}
-                                    onChange={e => setData({ ...data, id: e.target.value })} />
-                                <small>{error.idError}</small>
-                            </Form.Group>
-                            <Form.Group>
-                                <Form.Label>Employee Name: </Form.Label>
-                                <Form.Control
-                                    type="text"
-                                    value={data.EmployeeName}
-                                    onChange={e => setData({ ...data, EmployeeName: e.target.value })} />
-                                <small>{error.EmployeeNameError}</small>
-                            </Form.Group>
-                            <Form.Group>
-                                <Form.Label>Employee Salary: </Form.Label>
-                                <Form.Control
-                                    type="text"
-                                    value={data.EmployeeSalary}
-                                    onChange={e => setData({ ...data, EmployeeSalary: e.target.value })} />
-                                <small>{error.EmployeeSalaryError}</small>
+                            {data ?
+                                <>
+                                    <Form.Group>
+                                        <Form.Label>Employee id: </Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            value={data.id}
+                                            onChange={e => setData({ ...data, id: e.target.value })} />
+                                        <small>{error.idError}</small>
+                                    </Form.Group>
+                                    <Form.Group>
+                                        <Form.Label>Employee Name: </Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            value={data.EmployeeName}
+                                            onChange={e => setData({ ...data, EmployeeName: e.target.value })} />
+                                        <small>{error.EmployeeNameError}</small>
+                                    </Form.Group>
+                                    <Form.Group>
+                                        <Form.Label>Employee Salary: </Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            value={data.EmployeeSalary}
+                                            onChange={e => setData({ ...data, EmployeeSalary: e.target.value })} />
+                                        <small>{error.EmployeeSalaryError}</small>
 
-                            </Form.Group>
-                            <Form.Group>
-                                <Form.Label>Employee Position: </Form.Label>
-                                <Form.Control
-                                    type="text"
-                                    value={data.Position}
-                                    onChange={e => setData({ ...data, Position: e.target.value })} />
-                                <small>{error.PositionError}</small>
+                                    </Form.Group>
+                                    <Form.Group>
+                                        <Form.Label>Employee Position: </Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            value={data.Position}
+                                            onChange={e => setData({ ...data, Position: e.target.value })} />
+                                        <small>{error.PositionError}</small>
 
-                            </Form.Group>
-                            <Button variant="success" type="submit">Edit Employee</Button>{' '}
-                             <Button variant="danger" onClick={Cancel}>Cancel</Button> 
-                            </>
-                            :null}
+                                    </Form.Group>
+                                    <Button variant="success" type="submit">Edit Employee</Button>{' '}
+                                    <Button variant="danger" onClick={Cancel}>Cancel</Button>
+                                </>
+                                : null}
                         </Form>
                     }
                 </Col>

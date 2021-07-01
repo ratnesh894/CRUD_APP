@@ -14,8 +14,6 @@ import * as XLSX from "xlsx";
 import FilterListIcon from '@material-ui/icons/FilterList';
 import { UserContext } from '../App';
 import { useContext } from 'react';
-import { CsvBuilder } from 'filefy';
-import SaveAltIcon from '@material-ui/icons/SaveAlt';
 import Navbar from './Navbar';
 const MatEdit = ({ index }) => {
     let history = useHistory();
@@ -42,10 +40,10 @@ const MatDelete = ({ index }) => {
 
 
     return <FormControlLabel
-    
+
         control={
             <IconButton color="secondary" aria-label="add an alarm" onClick={handleDeleteClick} >
-                    <DeleteIcon style={{ color: red[500] }} />
+                <DeleteIcon style={{ color: red[500] }} />
             </IconButton>
         }
     />
@@ -53,18 +51,18 @@ const MatDelete = ({ index }) => {
 
 
 function ShowEmp(props) {
-    const value = useContext(UserContext) 
-    useEffect(()=>{
+    const value = useContext(UserContext)
+    useEffect(() => {
 
-        if(!value.isAuth && !value.isLoading){
-    
+        if (!value.isAuth && !value.isLoading) {
+
             props.history.push('/login')
-    
+
             return false;
-    
+
         }
-    
-        },[props])
+
+    }, [props])
     const [employeeList, setEmployeeList] = useState([]);
     const [selectedRows, setSelectedRows] = useState([])
     const [q, setQ] = useState("");
@@ -77,7 +75,7 @@ function ShowEmp(props) {
         });
     };
     const excelExport = () => {
-       
+
         const ws = XLSX.utils.json_to_sheet(selectedRows);
         const wb = { Sheets: { data: ws }, SheetNames: ["data"] };
         const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
@@ -106,7 +104,7 @@ function ShowEmp(props) {
             width: 150,
         },
         {
-            
+
             field: 'Update',
             headerName: 'Update',
             width: 150,
@@ -115,7 +113,7 @@ function ShowEmp(props) {
             disableClickEventBubbling: true,
             renderCell: (params) => {
                 return (
-                    
+
                     <div className="d-flex justify-content-between align-items-center" style={{ cursor: "pointer" }}>
                         <MatEdit index={params.row.id} />
                     </div>
@@ -156,51 +154,37 @@ function ShowEmp(props) {
             width: 150,
         },
     ]
-            
-          
+
+
     function search(rows) {
         return rows.filter(row => row.EmployeeName.toLowerCase().indexOf(q) > -1)
     }
-    /*  return(
-         <div>
-       {employeeList.map((val, key) => {
-       return (
-         <div className="employee">
-          <div>
-         <h3>Name: {val.Name}</h3>
-            <h3>salary: {val.Salary}</h3>
-           
-           <h3>Position: {val.Position}</h3>
-           
-           </div>
-          </div>)})} 
-          </div> 
-     ) */
+
 
     return (
 
-        
+
         <div style={{ height: 400, width: '100%' }}>
-           <Navbar/>
+            <Navbar />
             <h1>Employee Details</h1>
             <FilterListIcon style={{ float: 'left' }} onClick={(e) => setD(true)} />
             {D ?
                 <input style={{ float: 'left' }} type="text" value={q} onChange={(e) => setQ(e.target.value)} />
                 : null}
-            
+
             <Button style={{ float: 'center', marginLeft: '10px' }} variant="outline-dark" onClick={excelExport}>Export Data</Button>
             <br />
             {console.log(value.userRole)}
             <br />
             <DataGrid
                 rows={search(employeeList)}
-                columns={value.userRole==='admin'? columns:columns1}
+                columns={value.userRole === 'admin' ? columns : columns1}
                 pageSize={5}
                 checkboxSelection
                 disableSelectionOnClick
                 onRowSelected={(e) => selectedRows.push(e.data)}
             />
-            {/* <button onClick={e=>console.log(selectedRows)}>Show selected Data</button> */}
+
         </div>
 
     )
