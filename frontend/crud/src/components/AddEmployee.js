@@ -1,10 +1,12 @@
 
 import React, { useState } from 'react';
 import {Link} from 'react-router-dom';
-import {Container,Button,Form,Row,Col} from 'react-bootstrap';
+//import {Container,Button,Form,Row,Col} from 'react-bootstrap';
 import axios from 'axios';
 import {Alert} from 'react-bootstrap';
 import { useHistory }from 'react-router-dom';
+import { Grid, TextField, Button, Card, CardContent, Typography } from '@material-ui/core';
+import {inputFormElements} from './formElement';
 
 
 
@@ -58,6 +60,7 @@ function AddEmployee(){
 
         history.push('/');
     }
+    
      const submitData=(e)=>{
         e.preventDefault();
         const isValid = validate();
@@ -70,51 +73,60 @@ function AddEmployee(){
                 setMessage({message:"Something Went Wrong", variant:"danger"})
             })
         } 
-    } 
+    }
+    
     return(
-        
-        <Container className="mt-4">
-           
-        <Row>
-        <h4 style={{textAlign:"justify"}}>Add Employee</h4>
-            <Col>
-                {message?
-                <Alert variant={message.variant}>{message.message}</Alert>:
-                <Form onSubmit={submitData}>
-                    <Form.Group>
-                        <Form.Label>Employee ID: </Form.Label>
-                        <Form.Control type="text" onChange={e=>setData({...data,id:e.target.value})}
-                        isInvalid={!!error.salaryError}/> 
-                        <Form.Control.Feedback type='invalid'>{error.idError}</Form.Control.Feedback>
-                    </Form.Group>
-                    <Form.Group>
-                        <Form.Label>Employee Name: </Form.Label>
-                        <Form.Control type="text" onChange={e=>setData({...data,EmployeeName:e.target.value})}
-                        isInvalid={!!error.salaryError}/>
-                         <Form.Control.Feedback type='invalid'>{error.nameError}</Form.Control.Feedback>
-                    </Form.Group>
-                    <Form.Group>
-                        <Form.Label>Employee Salary: </Form.Label>
-                        <Form.Control type="text" onChange={e=>setData({...data,EmployeeSalary:e.target.value})} 
-                        isInvalid={!!error.salaryError}/>
-                        <Form.Control.Feedback type='invalid'>{error.salaryError}</Form.Control.Feedback>
-                    </Form.Group>
-                    <Form.Group>
-                        <Form.Label>Employee Position: </Form.Label>
-                        <Form.Control type="text" onChange={e=>setData({...data,Position:e.target.value})}
-                        isInvalid={!!error.positionError}/>
-                         <Form.Control.Feedback type='invalid'>{error.positionError}</Form.Control.Feedback>
-                    </Form.Group>
-                    <Button variant="success" type="submit">Add Employee</Button>
-                    <Button variant="danger" onClick={Cancel}>Cancel</Button>
-                </Form>
+    <div style={{paddingTop:'10%'}}>
+  
+   <Grid>
+   <Card style={{ maxWidth: 450, padding: "20px 5px", margin: "0 auto" }}>
+   <CardContent>
+            <Typography gutterBottom variant="h5">
+              Add Employee
+          </Typography> 
+          {message?
+           <Alert variant={message.variant}>{message.message}</Alert>:
+          <form onSubmit={submitData}>
+             {/*  <Grid container spacing={1}>
+              <Grid item xs={12}>
+                  <TextField type="number" placeholder="Enter Employee Id" label="id" variant="outlined"
+                  onChange={e=>setData({...data,id:e.target.value})} fullWidth required />
+                </Grid>
+                <Grid xs={12}  item>
+                  <TextField placeholder="Enter Employee Name" label=" Name" variant="outlined"
+                  onChange={e=>setData({...data,EmployeeName:e.target.value})} fullWidth required />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField type="number" placeholder="Enter Salary" label="Salary" variant="outlined" 
+                  onChange={e=>setData({...data,EmployeeSalary:e.target.value})}  fullWidth required />
+                </Grid>
+                <Grid xs={12}  item>
+                  <TextField placeholder="Position" label="Position" variant="outlined"
+                  onChange={e=>setData({...data,Position:e.target.value})}  fullWidth required />
+                </Grid>
+                <Grid item xs={12}>
+                  <Button type="submit" variant="contained" color="primary" fullWidth>Submit</Button>
+                </Grid>
+                </Grid> */}
+                <Typography variant="body2" align="left" gutterBottom>Add Employee </Typography>
+                <Grid container spacing={1}>
+                    {
+                        inputFormElements.slice(0, 10).map(input => <Grid xs={input.xs} sm={input.sm} item>
+                            <TextField {...input}  />
+                            </Grid>)
+                    }
+                    </Grid>
+                    <Grid item xs={12}>
+                  <Button type="submit" variant="contained" color="primary" fullWidth>Submit</Button>
+                </Grid>
+            </form>
 }
-            </Col>
-            <Col></Col>
-        </Row>
-    </Container>
-
-    )
+          </CardContent>
+        </Card>
+      </Grid>
+   </div>
+   
+    );
 }
 
 export default AddEmployee;

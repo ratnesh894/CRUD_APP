@@ -8,6 +8,7 @@ import GetEmployee from './components/GetEmployees'
 import EditEmployee from './components/EditEmployee';
 import Login from './components/login';
 import axios from 'axios';
+import ContactUs from './components/contact';
 export const UserContext = React.createContext()
 function App() {
   const [auth, setAuth] = useState(false)
@@ -56,6 +57,7 @@ function App() {
             <Route path='/edit/:id' exact component={EditEmployee} />
             <Route path='/login' exact component={Login} />
             <Route path='/' exact component={Home} />
+            <Route path='/contact' component={ContactUs}/>
           </Switch>
         </UserContext.Provider>
       </div>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
 import Axios from 'axios';
-import { DataGrid } from '@material-ui/data-grid';
+import { DataGrid,GridToolbar} from '@material-ui/data-grid';
 import EditIcon from '@material-ui/icons/Edit';
 import { FormControlLabel, IconButton } from '@material-ui/core';
 import { blue, red } from '@material-ui/core/colors';
@@ -52,7 +52,7 @@ const MatDelete = ({ index }) => {
 
 function ShowEmp(props) {
     const value = useContext(UserContext)
-    useEffect(() => {
+   /*  useEffect(() => {
 
         if (!value.isAuth && !value.isLoading) {
 
@@ -62,7 +62,7 @@ function ShowEmp(props) {
 
         }
 
-    }, [props])
+    }, [props]) */
     const [employeeList, setEmployeeList] = useState([]);
     const [selectedRows, setSelectedRows] = useState([])
     const [q, setQ] = useState("");
@@ -74,6 +74,10 @@ function ShowEmp(props) {
             setEmployeeList(response.data);
         });
     };
+    useEffect(() => {
+        getEmployees()
+    }, [getEmployees]);
+
     const excelExport = () => {
 
         const ws = XLSX.utils.json_to_sheet(selectedRows);
@@ -83,10 +87,8 @@ function ShowEmp(props) {
         FileSaver.saveAs(data, "EmployeeData" + fileExtension);
 
     }
-    useEffect(() => {
-        getEmployees()
-    }, [getEmployees]);
-
+    
+ 
 
 
     const columns = [
@@ -97,6 +99,7 @@ function ShowEmp(props) {
             headerName: 'Salary',
             width: 150,
             editable: true,
+
         },
         {
             field: 'Position',
@@ -157,8 +160,9 @@ function ShowEmp(props) {
 
 
     function search(rows) {
-        return rows.filter(row => row.EmployeeName.toLowerCase().indexOf(q) > -1)
-    }
+        return rows.filter(row => row.EmployeeName.indexOf(q) > -1 ) 
+    } 
+   
 
 
     return (
@@ -171,6 +175,10 @@ function ShowEmp(props) {
             {D ?
                 <input style={{ float: 'left' }} type="text" value={q} onChange={(e) => setQ(e.target.value)} />
                 : null}
+               {/*   <FilterListIcon style={{ float: 'left' }} onClick={(e) => setD(true)} />
+            {D ?
+                <input style={{ float: 'left' }} type="text" value={q} onChange={(e) => setQ(e.target.value)} />
+                : null} */}
 
             <Button style={{ float: 'center', marginLeft: '10px' }} variant="outline-dark" onClick={excelExport}>Export Data</Button>
             <br />
@@ -183,6 +191,17 @@ function ShowEmp(props) {
                 checkboxSelection
                 disableSelectionOnClick
                 onRowSelected={(e) => selectedRows.push(e.data)}
+               /*  {...employeeList}
+                components={{
+                    Toolbar: GridToolbar,
+                  }} */
+                  filterModel={{
+                    items: [
+                      { columnField: 'EmployeeSalary', operatorValue: 'contains', value: '' },
+                     
+                      
+                    ],
+                  }} 
             />
 
         </div>

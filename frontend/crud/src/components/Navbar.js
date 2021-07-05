@@ -36,7 +36,7 @@ function Navbars(props) {
                 <Link to="/Add" className="nav-link">Add Employee</Link>
               </li> : null}
             <li className="navbar-item">
-              <Link to="/Contact" className="nav-link">Contact Us</Link>
+              <Link to="/contact" className="nav-link">Contact Us</Link>
             </li>
 
           </ul>
